@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import json
 
+with open('data.json', 'r') as file:
+    data = json.load(file)
 
 def load_data(sheets_url):
     csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
@@ -10,64 +13,21 @@ def load_data(sheets_url):
 
 st.set_page_config(layout="wide", page_icon="🪑",
                 page_title="Generator")
-st.title("🪑 Generator Genap 24/25")
+st.title("🪑 Generator Genap 25/26")
 right = st
 left = st.sidebar
 
 right.write("Hasil:")
 
-
 left.write("Isi datanya:")
 
 jenis = left.selectbox(
     "Matkul",
-    ["ALPRO2", "STD", "JARKOM", "SISOP", "PBO", "DKA", "BASDAT",
-        "DPBO", "KPL", "ADPL", "PPL", "CASLAB_PRAMAGANG_2526"],
+    [key for key in data.keys()],
     index=0,
 )
 
-if jenis == "ALPRO2":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1051006003")
-elif jenis == "STD":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1723414529")
-elif jenis == "DKA":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=78512067")
-elif jenis == "PBO":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=345368744")
-elif jenis == "DPBO":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=165603706")
-elif jenis == "ADPL":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1671897911")
-elif jenis == "PPL":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1636199559")
-elif jenis == "SISOP":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1240343747")
-elif jenis == "JARKOM":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1854277346")
-elif jenis == "BASDAT":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=882741712")
-elif jenis == "ABP":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=38981871")
-elif jenis == "KPL":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=955695029")
-elif jenis == "WEBPRO":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=2084916089")
-elif jenis == "CASLAB_PRAMAGANG_2526":
-    df = load_data(
-        "https://docs.google.com/spreadsheets/d/1Tu--zAiYLB4HA3dD0OmAgaa6Vbkjyn7a/edit#gid=1398007307")
+df = load_data(data[jenis])
 
 if df.empty:
     right.write("Data kosong")
